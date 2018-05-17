@@ -1,4 +1,29 @@
-<pv-map>
-  <pv-map-marker [formControl]="markerControl" markerTitle="Location" animation="drop"></pv-map-marker>
-  <pv-map-polygon [formControl]="polygonControl"></pv-map-polygon>
+<pv-map (move)="mouseMoved($event)" zoom="8" [center]="{lat: 0, lng: 0}">
+    <pv-map-marker [formControl]="markerControl" [editable]="true">
+        <pv-map-info-window></pv-map-info-window>
+    </pv-map-marker>
+    <pv-map-polygon [formControl]="polygonControl"></pv-map-polygon>
 </pv-map>
+
+<div class="debug-info">
+    <pre>
+        <code>
+            Info:
+            {{ mapInfo | json }}
+        </code>
+    </pre>
+    <pre>
+        <code>
+            Polygon:
+            {{ polygonControl.value | json }}
+        </code>
+    </pre>
+    <pre>
+        <code>
+            Marker:
+            {{ markerControl.value | json }}
+        </code>
+    </pre>
+</div>
+
+

@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MapPolygonDirective } from './map-polygon.directive';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class PolygonManagerService {
+@Injectable()
+export class MapPolygonManager {
 
-  constructor() { }
+    constructor() { }
 
-  private _polygons = [];
+    private _polygons = [];
 	private _map: any;
 
     public useMap(map: any){

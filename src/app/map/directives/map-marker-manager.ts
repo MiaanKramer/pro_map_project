@@ -1,18 +1,12 @@
 import { Injectable } from '@angular/core';
-import { MapMarkerDirective } from './map-marker.directive';
-import { PolygonManagerService } from './polygon.service';
-import { AppComponent } from './app.component';
 
 declare var google: any;
 
 
 @Injectable()
-export class MarkerManager {
+export class MapMarkerManager {
     private _markers = [];
 	private _map: any;
-    private _marker: MapMarkerDirective;
-    private _poly: PolygonManagerService;
-    private _app : AppComponent;
 
     public useMap(map: any){
         this._map = map;
