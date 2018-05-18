@@ -126,8 +126,6 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 			
 			let lngLngs = pathArr.map(latLng => new google.maps.LatLng(latLng));
 			
-			console.log('SET PATH', lngLngs);
-			
 			this._polygon.getPath().unbindAll();
 			
 			let path = new google.maps.MVCArray(lngLngs);
@@ -135,11 +133,6 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 			path.addListener('remove_at', (event) => {
 				this._onChange(this.serializePath());
 			});
-
-			// path.addListener('set_at', (event) => {
-			// 	console.log('set_at', event);
-			// 	this._onChange(this.serializePath());
-			// });
 
 			this._polygon.setPath(path);
 		});

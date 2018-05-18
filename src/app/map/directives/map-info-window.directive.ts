@@ -29,13 +29,32 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
         private _markerRef: MapMarkerRef
     ) {}
 
+    titleValue = new BehaviorSubject<string>('Default Title');
+    subTitleValue = new BehaviorSubject<string>('Small batch post-ironic franzen truffaut williamsburg');
+    contentValue = new BehaviorSubject<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+
     @Input()
-    set content(value: any){
-        this.patchOptions({ content: value });
+    set title(value: string){
+        this.titleValue.next(value);
     }
 
     @Input()
-    set maxWidth(value: number){
+    set subTitle(value: string){
+        this.subTitleValue.next(value);
+    }
+
+    @Input()
+    set contentArea(value: string){
+        this.contentValue.next(value);
+    }
+
+    @Input()
+    set content(value: any){
+        this.patchOptions({ content: value.value });
+    }
+
+    @Input()
+    set maxWidth(value: any){
         this.patchOptions({ maxWidth: value });
     }
 
@@ -59,27 +78,9 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
 
     initInfoWindow(Data){
         this._infoWindow = new google.maps.InfoWindow({
-            content: `
-            <h1 mat-title>Title</h1>
-            <mat-card-content>
-                <mat-card-icon>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    <br>
-                      Vestibulum dapibus auctor pretium. Donec sit amet velit
-                    <br> 
-                      sit amet ante accumsan tincidunt eget a lacus.</span>
-                    <br>
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    <br>
-                      Vestibulum dapibus auctor pretium. Donec sit amet velit
-                    <br> 
-                      sit amet ante accumsan tincidunt eget a lacus.</span>
-                    <br>
-            </mat-card-content>
-            <mat-card-actions>
-                <Button mat-button>Info</Button>
-            </mat-card-actions>
-            `,
+            content: '<h1>' + this.titleValue.value + '</h1>' +
+                     '<h3>' + this.subTitleValue.value + '</h3>' + 
+                     '<p>' + this.contentValue.value + '</p>'
         });
 
         this._markerRef.open(this._infoWindow);

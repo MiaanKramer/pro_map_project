@@ -44,6 +44,11 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     // visible
 
     @Input()
+    set infoWindow(value: any){
+        this.patchOptions({ infoWindow: value });
+    }
+
+    @Input()
     set animation(value: any){
         this.patchOptions({ animation: value });
     }
