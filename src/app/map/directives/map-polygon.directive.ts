@@ -45,6 +45,46 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 	// strokeWeight
 	// visible
 
+	@Input()
+	set draggable(value: boolean){
+		this.patchOptions({ draggable: value });
+	}
+
+	@Input()
+	set editable(value: boolean){
+		this.patchOptions({ editable: value });
+	}
+
+	@Input()
+	set fillcolor(value: any){
+		this.patchOptions({ fillcolor: value })
+	}
+
+	@Input()
+	set fillOpacity(value: number){
+		this.patchOptions({ fillOpacity: value });
+	}
+
+	@Input()
+	set geodesic(value: boolean){
+		this.patchOptions({ geodesic: value });
+	}
+
+	@Input()
+	set strokeColor(value: any){
+		this.patchOptions({ strokeColor: value });
+	}
+
+	@Input()
+	set strokeWeight(value: any){
+		this.patchOptions({ strokeWeight: value });
+	}
+
+	@Input()
+	set visible(value: boolean){
+		this.patchOptions({ visible: value });
+	}
+
 	constructor(
 		private _mapsApiLoader: MapsApiLoader,
 		private _polygons: MapPolygonManager
@@ -74,32 +114,28 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 		this._polygons.add(this._polygon);
 
 		this._polygon.addListener('mouseup', (event) => {
-			console.log('mouseup', event);
 			this._onChange(this.serializePath());
 		});
-
+		
+		
 		this._options$.subscribe(options => {
 			this._polygon.setOptions(options);
 		});
-
+		
 		this._path$.subscribe(pathArr => {
-
+			
 			let lngLngs = pathArr.map(latLng => new google.maps.LatLng(latLng));
-
+			
 			console.log('SET PATH', lngLngs);
-
+			
 			this._polygon.getPath().unbindAll();
-
+			
 			let path = new google.maps.MVCArray(lngLngs);
-
-			path.addListener('insert_at', (event) => {
-				console.log('insert_at', event);
-				this._onChange(this.serializePath());
-			});
+			
 			path.addListener('remove_at', (event) => {
-				console.log('remove_at', event);
 				this._onChange(this.serializePath());
 			});
+
 			// path.addListener('set_at', (event) => {
 			// 	console.log('set_at', event);
 			// 	this._onChange(this.serializePath());

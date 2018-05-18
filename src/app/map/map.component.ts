@@ -50,6 +50,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this._zoom$.next(parseInt(value));
     }
 
+
+
     @Output('move')
     moveEmitter = new EventEmitter<MouseEvent>();
 
@@ -85,6 +87,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this._mapListeners.forEach(listener => {
             listener.remove();
         });
+
+        this._markers.clear();
     }
 
     selectLocation(pos) {

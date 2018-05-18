@@ -23,7 +23,6 @@ export class AppComponent {
 
 
   mouseMoved(event){
-    // console.log(event);
     this.mapInfo.mouseCoords = event.latLng;
   }
 

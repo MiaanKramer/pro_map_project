@@ -22,5 +22,11 @@ export class MapPolygonManager {
         polygon.unbindAll();
         this._polygons.splice(this._polygons.indexOf(polygon), 1);
     }
+
+    public clear(){
+        this._polygons.forEach(poly => {
+            this.remove(poly);
+        });
+    }
 }
 

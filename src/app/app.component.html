@@ -1,5 +1,10 @@
-<pv-map (move)="mouseMoved($event)" zoom="8" [center]="{lat: 0, lng: 0}">
-    <pv-map-marker [formControl]="markerControl" [editable]="true">
+<pv-map (move)="mouseMoved($event)"
+        [zoom]="8"
+        [center]="{lat: 0, lng: 0}">
+    <pv-map-marker 
+    [formControl]="markerControl" 
+    [editable]="true"
+    [title]="Label">
         <pv-map-info-window></pv-map-info-window>
     </pv-map-marker>
     <pv-map-polygon [formControl]="polygonControl"></pv-map-polygon>

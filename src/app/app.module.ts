@@ -9,7 +9,8 @@ import { FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {
 	MatButtonModule,
 	MatIconModule,
-	MatToolbarModule
+	MatToolbarModule,
+	MatCardModule
 } from '@angular/material';
 
 import { MapModule } from './map';
@@ -26,7 +27,8 @@ import { AppComponent } from './app.component';
 		MatButtonModule,
 		MatIconModule,
 		MatToolbarModule,
-		MapModule
+		MapModule,
+		MatCardModule
 	],
 
     declarations: [

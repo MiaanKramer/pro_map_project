@@ -23,7 +23,13 @@ export class MapMarkerManager {
         this._markers.splice(this._markers.indexOf(marker), 1);
     }
 
-    public get() {
+    public get(){
         return this._markers;
+    }
+
+    public clear(){
+        this._markers.forEach(mark => {
+            this.remove(mark);
+        });
     }
 }

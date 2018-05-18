@@ -44,8 +44,74 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     // visible
 
     @Input()
+    set animation(value: any){
+        this.patchOptions({ animation: value });
+    }
+
+    @Input()
     set editable(value: boolean){
         this.patchOptions({ editable: value });
+    }
+
+    @Input()
+    set crossOnDrag(value: boolean){
+        this.patchOptions({ crossOnDrag: value });
+    }
+
+    @Input()
+    set cursor(value: any){
+        this.patchOptions({ cursor: value });
+    }
+
+    @Input()
+    set draggable(value: boolean){
+        this.patchOptions({ draggable: value });
+    }
+
+    @Input()
+    set icon(value: any){
+
+        let icon = '';
+        switch(value) {
+
+            case 'tree':
+                icon = "tree.url"
+                break;
+
+            case 'apple':
+                icon = "apple.url"
+                break;
+
+            case 'pear':
+                icon = "pear.url"
+                break;
+
+            case 'cultevar':
+                icon = "cultevar.url"
+                break;
+        }
+
+        this.patchOptions({ icon: icon });
+    }
+
+    @Input()
+    set label(value: any){
+        this.patchOptions({ label: value });
+    }
+
+    @Input()
+    set opacity(value: number) {
+        this.patchOptions({ opacity: value });
+    }
+
+    @Input()
+    set title(value: string){
+        this.patchOptions({ title: value });
+    }
+
+    @Input()
+    set visible(value: boolean){
+        this.patchOptions({ visible: value });
     }
 
     private _defaultOptions: any = {
@@ -96,6 +162,10 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
                 lng: pos.lng()
             };
             this._onChange(latLng);
+        });
+
+        this._marker.addListener('click', () => {
+            
         });
 
         this._position$.subscribe(pos => {
