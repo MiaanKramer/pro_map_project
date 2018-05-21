@@ -1,4 +1,4 @@
-import { OnInit, Input, NgZone, Directive, ElementRef, OnDestroy, ViewChild, inject, forwardRef } from '@angular/core';
+import { OnInit, Input, NgZone, Directive, ElementRef, OnDestroy, ViewChild, inject, forwardRef, Output, EventEmitter } from '@angular/core';
 
 import { MapMarkerManager } from './map-marker-manager';
 import { MapsApiLoader } from '../maps-api-loader';
@@ -31,23 +31,6 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     static ANIMATION_DROP = 1;
     static ANIMATION_BOUNCE = 2;
 
-    // ADD INPUTS
-
-    // animation
-    // crossOnDrag
-    // cursor
-    // draggable
-    // icon
-    // label
-    // opacity
-    // title
-    // visible
-
-    @Input()
-    set infoWindow(value: any){
-        this.patchOptions({ infoWindow: value });
-    }
-
     @Input()
     set animation(value: any){
         this.patchOptions({ animation: value });
@@ -74,29 +57,8 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     }
 
     @Input()
-    set icon(value: any){
-
-        let icon = '';
-        switch(value) {
-
-            case 'tree':
-                icon = "tree.url"
-                break;
-
-            case 'apple':
-                icon = "apple.url"
-                break;
-
-            case 'pear':
-                icon = "pear.url"
-                break;
-
-            case 'cultevar':
-                icon = "cultevar.url"
-                break;
-        }
-
-        this.patchOptions({ icon: icon });
+    set icon(value: string){
+        this.patchOptions({ icon: value });
     }
 
     @Input()
@@ -119,6 +81,13 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
         this.patchOptions({ visible: value });
     }
 
+    @Output('click')
+    clickEmitter = new EventEmitter<MouseEvent>();
+
+    // ADD OUTPUTS
+
+    // drag
+
     private _defaultOptions: any = {
         draggable: true,
         visible: true
@@ -134,7 +103,8 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     constructor(
         private _mapsApiLoader: MapsApiLoader,
         private _markers: MapMarkerManager,
-        private _markerRef: MapMarkerRef
+        private _markerRef: MapMarkerRef,
+        private _zone: NgZone
     ) {}
 
     writeValue(value: any): void {
@@ -161,25 +131,34 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
         this._markerRef.use(this._marker, this._marker.getMap());
 
         this._marker.addListener('position_changed', () => {
-            let pos = this._marker.getPosition();
-            let latLng = {
-                lat: pos.lat(),
-                lng: pos.lng()
-            };
-            this._onChange(latLng);
+
+            this._zone.run(() => {
+                let pos = this._marker.getPosition();
+                    let latLng = {
+                        lat: pos.lat(),
+                        lng: pos.lng()
+                    };
+                    this._onChange(latLng);
+            });
+
         });
 
-        this._marker.addListener('click', () => {
-            
+        this._marker.addListener('click', (event) => {
+            this._zone.run(() => {
+                this.clickEmitter.emit(event);
+            });
         });
 
         this._position$.subscribe(pos => {
-            console.log(this._marker);
-            this._marker.setPosition(pos);
+            this._zone.run(() => {
+                this._marker.setPosition(pos);
+            });
         });
 
         this._options$.subscribe(options => {
-            this._marker.setOptions(options);
+            this._zone.run(() => {
+                this._marker.setOptions(options);
+            });
         });
 
     }
@@ -194,7 +173,11 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
         return null;
     }
 
-    ngOnDestroy(){ }
+    ngOnDestroy(){
+        if(this._marker){
+            this._markers.remove(this._marker);
+        }
+    }
 
     patchOptions(options: any){
         let updated = { ...this._options$.value, ...options };

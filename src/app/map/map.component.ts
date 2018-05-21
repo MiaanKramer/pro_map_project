@@ -84,11 +84,10 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit(){}
 
     ngOnDestroy(){
-        this._mapListeners.forEach(listener => {
-            listener.remove();
-        });
+        this._map.unbindAll();
 
         this._markers.clear();
+        this._polygons.clear();
     }
 
     selectLocation(pos) {
