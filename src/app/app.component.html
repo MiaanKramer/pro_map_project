@@ -1,17 +1,20 @@
 <pv-map (move)="mouseMoved($event)"
         [zoom]="8"
-        [center]="{lat: 0, lng: 0}">
-    <pv-map-marker 
-    [formControl]="markerControl"
-    [editable]="true"
-    [title]="Label">
-        <pv-map-info-window>
-        </pv-map-info-window>
+        [center]="{lat: 0, lng: 0}"
+        *ngIf="showMap">
+    <pv-map-marker *ngFor="let control of markersControl.controls" [formControl]="control">
+        <pv-map-info-window content="1"></pv-map-info-window>
+        <pv-map-info-window content="2"></pv-map-info-window>
     </pv-map-marker>
-    <pv-map-polygon [formControl]="polygonControl"></pv-map-polygon>
+    <pv-map-polygon *ngFor="let control of polysControl.controls" [formControl]="control"></pv-map-polygon>
 </pv-map>
 
 <div class="debug-info">
+
+    <button (click)="showMap = !showMap">Toggle Map</button>
+    <button (click)="addMarker()">Add</button>
+    <button (click)="removeMarker()">Remove</button>
+
     <pre>
         <code>
             Info:
@@ -21,13 +24,13 @@
     <pre>
         <code>
             Polygon:
-            {{ polygonControl.value | json }}
+            {{ polysControl.value | json }}
         </code>
     </pre>
     <pre>
         <code>
             Marker:
-            {{ markerControl.value | json }}
+            {{ markersControl.value | json }}
         </code>
     </pre>
 </div>

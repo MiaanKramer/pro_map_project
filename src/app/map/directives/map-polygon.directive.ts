@@ -34,17 +34,6 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 	private _path$ = new BehaviorSubject([]);
 	private _options$ = new BehaviorSubject(this._defaultOptions);
 
-	// ADD INPUTS
-
-	// draggable
-	// editable
-	// fillColor
-	// fillOpacity
-	// geodesic
-	// strokeColor
-	// strokeWeight
-	// visible
-
 	@Input()
 	set draggable(value: boolean){
 		this.patchOptions({ draggable: value });
@@ -87,8 +76,8 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 
 	constructor(
 		private _mapsApiLoader: MapsApiLoader,
-		private _polygons: MapPolygonManager
-
+		private _polygons: MapPolygonManager,
+		private _zone: NgZone
 	) { }
 
 	writeValue(value: any): void {
@@ -113,25 +102,28 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 		this._polygon = new google.maps.Polygon(this._defaultOptions);
 		this._polygons.add(this._polygon);
 
-		this._polygon.addListener('mouseup', (event) => {
-			this._onChange(this.serializePath());
-		});
-		
-		
 		this._options$.subscribe(options => {
 			this._polygon.setOptions(options);
 		});
-		
-		this._path$.subscribe(pathArr => {
-			
-			let lngLngs = pathArr.map(latLng => new google.maps.LatLng(latLng));
-			
-			this._polygon.getPath().unbindAll();
-			
-			let path = new google.maps.MVCArray(lngLngs);
-			
-			path.addListener('remove_at', (event) => {
+
+		this._polygon.addListener('mouseup', (event) => {
+			this._zone.run(() => {
 				this._onChange(this.serializePath());
+			});
+		});
+
+		this._path$.subscribe(pathArr => {
+
+			let lngLngs = pathArr.map(latLng => new google.maps.LatLng(latLng));
+
+			this._polygon.getPath().unbindAll();
+
+			let path = new google.maps.MVCArray(lngLngs);
+
+			path.addListener('remove_at', (event) => {
+				this._zone.run(() => {
+					this._onChange(this.serializePath());
+				});
 			});
 
 			this._polygon.setPath(path);
@@ -139,7 +131,9 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 	}
 
 	ngOnDestroy() {
-
+		if(this._polygon){
+			this._polygons.remove(this._polygon);
+		}
 	}
 
 	private serializePath(){

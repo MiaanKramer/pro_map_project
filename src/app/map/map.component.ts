@@ -28,7 +28,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private _map: any;
 
-    private _mapOptions = {
+    private _defaultOptions = {
         center: {lat: -37.13, lng: -16.43},
         zoom: 2,
         zoomControl: true,
@@ -42,14 +42,26 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         draggableCursor: ''
     };
 
-    @Input() set center(value: LatLng ){
+    @Input()
+    set center(value: LatLng ){
         this._center$.next(value);
     }
 
-    @Input() set zoom(value: string){
+    @Input()
+    set zoom(value: string){
         this._zoom$.next(parseInt(value));
     }
 
+    // add inputs
+    // zoomControl
+    // mapTypeControl
+    // scaleControl
+    // streetViewControl
+    // rotateControl
+    // fullscreenControl
+    // gestureHandling
+    // mapTypeId
+    // draggableCursor
 
 
     @Output('move')
@@ -57,6 +69,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private _zoom$ = new BehaviorSubject<number>(10);
     private _center$ = new BehaviorSubject<LatLng>({lat: 0, lng: 0});
+    private _options$ = new BehaviorSubject<any>(this._defaultOptions);
 
     private _mapListeners = [];
 
@@ -84,11 +97,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit(){}
 
     ngOnDestroy(){
-        this._mapListeners.forEach(listener => {
-            listener.remove();
-        });
+        this._map.unbindAll();
 
         this._markers.clear();
+        this._polygons.clear();
+
+        // complete behavior subjects
     }
 
     selectLocation(pos) {

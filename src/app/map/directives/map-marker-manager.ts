@@ -13,13 +13,15 @@ export class MapMarkerManager {
     }
 
     public add(marker: any){
+        console.log('MapMarkerManager: add');
         this._markers.push(marker);
         marker.setMap(this._map);
     }
 
     public remove(marker: any){
-        marker.setMap(null);
+        console.log('MapMarkerManager: remove');
         marker.unbindAll();
+        marker.setMap(null);
         this._markers.splice(this._markers.indexOf(marker), 1);
     }
 
@@ -28,8 +30,11 @@ export class MapMarkerManager {
     }
 
     public clear(){
-        this._markers.forEach(mark => {
-            this.remove(mark);
+        console.log('MapMarkerManager: clear', this._markers.length);
+        this._markers.forEach(marker => {
+            marker.unbindAll();
+            marker.setMap(null);
         });
+        this._markers = [];
     }
 }

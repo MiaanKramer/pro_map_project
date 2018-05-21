@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -9,22 +9,51 @@ import { FormControl } from '@angular/forms';
 })
 export class AppComponent {
 
-  mapInfo:any = {};
+    showMap = true;
 
-  markerControl = new FormControl({ lat: 0, lng: 0});
-  polygonControl = new FormControl(
-    [
-      { lat: 1, lng: -1},
-      { lat: 1, lng: 1},
-      { lat: -1, lng: 1},
-      { lat: -1, lng: -1}
-    ]
-  );
+    polysControl = new FormArray([
+        new FormControl([
+            { lat: 1, lng: -1},
+            { lat: 1, lng: 1},
+            { lat: -1, lng: 1},
+            { lat: -1, lng: -1}
+        ]),
+        new FormControl([
+            { lat: 2, lng: -2},
+            { lat: 2, lng: 2},
+            { lat: -2, lng: 2},
+            { lat: -2, lng: -2}
+        ]),
+    ]);
+
+    markersControl = new FormArray([
+        new FormControl({ lat: 1, lng: -1}),
+        new FormControl({ lat: 1, lng: 1}),
+        new FormControl({ lat: -1, lng: 1}),
+        new FormControl({ lat: -1, lng: -1})
+    ]);
+
+
+    mapInfo:any = {};
+    marker = { lat: 1, lng: -1};
+    poly = [
+        { lat: 1, lng: -1},
+        { lat: 1, lng: 1},
+        { lat: -1, lng: 1},
+        { lat: -1, lng: -1}
+    ];
 
 
   mouseMoved(event){
     this.mapInfo.mouseCoords = event.latLng;
   }
 
+  addMarker(){
+      this.markersControl.push(new FormControl({lat: 0, lng: 0}));
+  }
+
+  removeMarker(){
+      this.markersControl.removeAt(0);
+  }
 
 }

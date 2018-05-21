@@ -20,7 +20,9 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
 
     private _defaultOptions: any = {};
 
+    private _content$ = new BehaviorSubject<string>('');
     private _options$ = new BehaviorSubject<LatLng>(this._defaultOptions);
+    private _open$ = new BehaviorSubject<boolean>(true);
     private _infoWindow = null;
 
     constructor(
@@ -29,24 +31,6 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
         private _markerRef: MapMarkerRef
     ) {}
 
-    titleValue = new BehaviorSubject<string>('Default Title');
-    subTitleValue = new BehaviorSubject<string>('Small batch post-ironic franzen truffaut williamsburg');
-    contentValue = new BehaviorSubject<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
-
-    @Input()
-    set title(value: string){
-        this.titleValue.next(value);
-    }
-
-    @Input()
-    set subTitle(value: string){
-        this.subTitleValue.next(value);
-    }
-
-    @Input()
-    set contentArea(value: string){
-        this.contentValue.next(value);
-    }
 
     @Input()
     set content(value: any){
@@ -59,35 +43,45 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
     }
 
     @Input()
-    set marker(value: any){
-        this.patchOptions({ marker: value });
+    set open(value: boolean){
+        this._open$.next(value);
     }
-
-    @Input()
-    set map(value: any){
-        this.patchOptions({ map: value });
-    }
-
-    data;
 
     ngOnInit() {
         this._mapsApiLoader.load().then(() => {
-            this.initInfoWindow(this.data);
+            this.initInfoWindow();
         });
     }
 
-    initInfoWindow(Data){
-        this._infoWindow = new google.maps.InfoWindow({
-            content: '<h1>' + this.titleValue.value + '</h1>' +
-                     '<h3>' + this.subTitleValue.value + '</h3>' + 
-                     '<p>' + this.contentValue.value + '</p>'
-        });
+    initInfoWindow(){
+        this._infoWindow = new google.maps.InfoWindow({});
 
-        this._markerRef.open(this._infoWindow);
-        this._markerRef.add(this._infoWindow);
+        this._content$.subscribe(content => {
+            this._infoWindow.setContent(content);
+        })
+
+        this._options$.subscribe(options => {
+            this._infoWindow.setOptions(options);
+        })
+
+        this._open$.subscribe(open => {
+            if(open){
+                this._markerRef.openInfoWindow(this._infoWindow);
+            }else{
+                this._markerRef.closeInfoWindow(this._infoWindow);
+            }
+        });
     }
 
-    ngOnDestroy(){ }
+    ngOnDestroy(){
+        if(this._infoWindow){
+            this._markerRef.closeInfoWindow(this._infoWindow);
+        }
+        // complete behavior subjects
+        this._content$.complete();
+        this._options$.complete();
+        this._open$.complete();
+    }
 
     patchOptions(options: any){
         let updated = { ...this._options$.value, ...options };
