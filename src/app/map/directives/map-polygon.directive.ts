@@ -134,6 +134,8 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 		if(this._polygon){
 			this._polygons.remove(this._polygon);
 		}
+		this._options$.complete();
+		this._path$.complete();
 	}
 
 	private serializePath(){

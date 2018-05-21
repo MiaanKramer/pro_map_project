@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Pipe } from '@angular/core';
 import 'hammerjs';
 
 import { BrowserModule }  from '@angular/platform-browser';
@@ -10,7 +10,9 @@ import {
 	MatButtonModule,
 	MatIconModule,
 	MatToolbarModule,
-	MatCardModule
+	MatInputModule,
+	MatFormFieldModule,
+	MatAutocompleteModule
 } from '@angular/material';
 
 import { MapModule } from './map';
@@ -24,11 +26,12 @@ import { AppComponent } from './app.component';
 		BrowserAnimationsModule,
 		HttpClientModule,
 		ReactiveFormsModule,
+		MapModule,
 		MatButtonModule,
 		MatIconModule,
 		MatToolbarModule,
-		MapModule,
-		MatCardModule
+		MatInputModule,
+		MatAutocompleteModule
 	],
 
     declarations: [

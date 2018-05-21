@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,28 +12,20 @@ export class AppComponent {
 
     showMap = true;
 
+    searchValue = "";
+
     polysControl = new FormArray([
         new FormControl([
             { lat: 1, lng: -1},
             { lat: 1, lng: 1},
             { lat: -1, lng: 1},
             { lat: -1, lng: -1}
-        ]),
-        new FormControl([
-            { lat: 2, lng: -2},
-            { lat: 2, lng: 2},
-            { lat: -2, lng: 2},
-            { lat: -2, lng: -2}
-        ]),
+        ])
     ]);
 
     markersControl = new FormArray([
-        new FormControl({ lat: 1, lng: -1}),
-        new FormControl({ lat: 1, lng: 1}),
-        new FormControl({ lat: -1, lng: 1}),
-        new FormControl({ lat: -1, lng: -1})
+        new FormControl({ lat: 1, lng: -1})
     ]);
-
 
     mapInfo:any = {};
     marker = { lat: 1, lng: -1};
@@ -55,5 +48,7 @@ export class AppComponent {
   removeMarker(){
       this.markersControl.removeAt(0);
   }
+
+
 
 }

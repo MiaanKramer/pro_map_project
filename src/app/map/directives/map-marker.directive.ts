@@ -84,10 +84,6 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     @Output('click')
     clickEmitter = new EventEmitter<MouseEvent>();
 
-    // ADD OUTPUTS
-
-    // drag
-
     private _defaultOptions: any = {
         draggable: true,
         visible: true
@@ -95,7 +91,6 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
 
     private _position$ = new BehaviorSubject<LatLng>({lat: 0, lng: 0});
     private _options$ = new BehaviorSubject<LatLng>(this._defaultOptions);
-
     private _marker: any;
     private _onChange = (value: any) => {};
     private _onTouch = () => {};
@@ -177,6 +172,8 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
         if(this._marker){
             this._markers.remove(this._marker);
         }
+        this._position$.complete();
+        this._options$.complete();
     }
 
     patchOptions(options: any){

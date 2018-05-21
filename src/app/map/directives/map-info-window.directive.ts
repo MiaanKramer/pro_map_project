@@ -18,7 +18,9 @@ declare var google: any;
 })
 export class MapInfoWindowDirective implements OnInit, OnDestroy {
 
-    private _defaultOptions: any = {};
+    private _defaultOptions: any = {
+        maxWidth:250
+    };
 
     private _content$ = new BehaviorSubject<string>('');
     private _options$ = new BehaviorSubject<LatLng>(this._defaultOptions);
@@ -34,11 +36,11 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
 
     @Input()
     set content(value: any){
-        this.patchOptions({ content: value.value });
+        this.patchOptions({ content: value });
     }
 
     @Input()
-    set maxWidth(value: any){
+    set maxWidth(value: number){
         this.patchOptions({ maxWidth: value });
     }
 
