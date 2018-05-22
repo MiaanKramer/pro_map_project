@@ -20,11 +20,11 @@ export const MAP_POLYGON_VALUE_ACCESSOR: any = {
 		MAP_POLYGON_VALUE_ACCESSOR
 	]
 })
-export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAccessor{
+export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAccessor {
 
 	private _polygon: any;
-	private _onChange = (value: any)=>{};
-	private _ontouch = ()=>{};
+	private _onChange = (value: any) => { };
+	private _ontouch = () => { };
 
 	private _defaultOptions: any = {
 		draggable: true,
@@ -35,42 +35,42 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 	private _options$ = new BehaviorSubject(this._defaultOptions);
 
 	@Input()
-	set draggable(value: boolean){
+	set draggable(value: boolean) {
 		this.patchOptions({ draggable: value });
 	}
 
 	@Input()
-	set editable(value: boolean){
+	set editable(value: boolean) {
 		this.patchOptions({ editable: value });
 	}
 
 	@Input()
-	set fillcolor(value: any){
+	set fillcolor(value: any) {
 		this.patchOptions({ fillcolor: value })
 	}
 
 	@Input()
-	set fillOpacity(value: number){
+	set fillOpacity(value: number) {
 		this.patchOptions({ fillOpacity: value });
 	}
 
 	@Input()
-	set geodesic(value: boolean){
+	set geodesic(value: boolean) {
 		this.patchOptions({ geodesic: value });
 	}
 
 	@Input()
-	set strokeColor(value: any){
+	set strokeColor(value: any) {
 		this.patchOptions({ strokeColor: value });
 	}
 
 	@Input()
-	set strokeWeight(value: any){
+	set strokeWeight(value: any) {
 		this.patchOptions({ strokeWeight: value });
 	}
 
 	@Input()
-	set visible(value: boolean){
+	set visible(value: boolean) {
 		this.patchOptions({ visible: value });
 	}
 
@@ -134,24 +134,24 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 	}
 
 	ngOnDestroy() {
-		if(this._polygon){
+		if (this._polygon) {
 			this._polygons.remove(this._polygon);
 		}
 		this._options$.complete();
 		this._path$.complete();
 	}
 
-	private serializePath(){
+	private serializePath() {
 
 		return this._polygon
-				   .getPath()
-				   .getArray()
-				   .map(latLng => {
-					   return {
-						   lat: latLng.lat(),
-						   lng: latLng.lng(),
-					   }
-				   });
+			.getPath()
+			.getArray()
+			.map(latLng => {
+				return {
+					lat: latLng.lat(),
+					lng: latLng.lng(),
+				}
+			});
 	}
 
 	private patchOptions(options: any) {

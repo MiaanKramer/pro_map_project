@@ -12,12 +12,12 @@ import { LatLng } from '../types';
 declare var google: any;
 
 @Directive({
-  selector: 'pv-map-info-window'
+    selector: 'pv-map-info-window'
 })
 export class MapInfoWindowDirective implements OnInit, OnDestroy {
 
     private _defaultOptions: any = {
-        maxWidth:250,
+        maxWidth: 250,
         content: 'Default Content'
     };
 
@@ -30,21 +30,21 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
         private _mapsApiLoader: MapsApiLoader,
         private _markers: MapMarkerManager,
         private _markerRef: MapMarkerRef
-    ) {}
+    ) { }
 
 
     @Input()
-    set content(value: any){
+    set content(value: any) {
         this.patchOptions({ content: value });
     }
 
     @Input()
-    set maxWidth(value: number){
+    set maxWidth(value: number) {
         this.patchOptions({ maxWidth: value });
     }
 
     @Input()
-    set open(value: boolean){
+    set open(value: boolean) {
         this._open$.next(value);
         this.toggle(value);
     }
@@ -55,7 +55,7 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
         });
     }
 
-    initInfoWindow(){
+    initInfoWindow() {
         this._infoWindow = new google.maps.InfoWindow({});
 
         this._content$.subscribe(content => {
@@ -67,17 +67,17 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
         })
 
         this._open$.subscribe(open => {
-            if(open){
+            if (open) {
                 this._markerRef.openInfoWindow(this._infoWindow);
-            }else{
+            } else {
                 this._markerRef.closeInfoWindow(this._infoWindow);
             }
         });
     }
 
 
-    ngOnDestroy(){
-        if(this._infoWindow){
+    ngOnDestroy() {
+        if (this._infoWindow) {
             this._markerRef.closeInfoWindow(this._infoWindow);
         }
         this._content$.complete();
@@ -85,13 +85,13 @@ export class MapInfoWindowDirective implements OnInit, OnDestroy {
         this._open$.complete();
     }
 
-    patchOptions(options: any){
+    patchOptions(options: any) {
         let updated = { ...this._options$.value, ...options };
         this._options$.next(updated);
     }
 
-    toggle(value){
-        if(value){
+    toggle(value) {
+        if (value) {
             this._infoWindow.close();
         } else {
             this._infoWindow.open();

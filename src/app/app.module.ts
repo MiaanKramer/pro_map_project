@@ -1,7 +1,7 @@
 import { NgModule, Pipe } from '@angular/core';
 import 'hammerjs';
 
-import { BrowserModule }  from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -34,11 +34,11 @@ import { AppComponent } from './app.component';
 		MatAutocompleteModule
 	],
 
-    declarations: [
+	declarations: [
 		AppComponent
 	],
 
-    exports: [],
+	exports: [],
 
 	providers: [],
 

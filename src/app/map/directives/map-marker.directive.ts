@@ -140,6 +140,9 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
 
         this._marker.addListener('click', (event) => {
             this._zone.run(() => {
+
+                console.log("Marker Event: ", event);
+
                 this.clickEmitter.emit(event);
 
                 var elevationService = new google.maps.ElevationService;
@@ -164,7 +167,6 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
     getElevation(location, elevationService){
         elevationService.getElevationForLocations({
             'locations': [location],
-
         }, function(result, status) {
             if(status == 'OK'){
                 if(result[0]){

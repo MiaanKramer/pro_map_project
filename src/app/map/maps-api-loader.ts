@@ -1,5 +1,5 @@
-import {Inject, Injectable } from '@angular/core';
-import { DOCUMENT} from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 
 @Injectable()
@@ -7,16 +7,16 @@ export class MapsApiLoader {
 
     private _scriptLoadingPromise: Promise<void>;
 
-    constructor(@Inject(DOCUMENT) private _document: Document) {}
+    constructor(@Inject(DOCUMENT) private _document: Document) { }
 
 
-    public load() : Promise<void>{
+    public load(): Promise<void> {
 
         if (this._scriptLoadingPromise) {
-           return this._scriptLoadingPromise;
+            return this._scriptLoadingPromise;
         }
 
-        const script = <HTMLScriptElement> this._document.createElement('script');
+        const script = <HTMLScriptElement>this._document.createElement('script');
         const callbackName = `callbackGoogleMapsApiLoader`;
 
         script.type = 'text/javascript';
@@ -36,7 +36,7 @@ export class MapsApiLoader {
     }
 
 
-    private _getScriptSrc(apiKey: string, callback: string){
+    private _getScriptSrc(apiKey: string, callback: string) {
         return `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=${callback}`;
     }
 
