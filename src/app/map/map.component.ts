@@ -5,6 +5,7 @@ import { MapMarkerManager } from './directives/map-marker-manager';
 import { MapPolygonManager } from './directives/map-polygon-manager';
 import { MapsApiLoader } from './maps-api-loader';
 import { LatLng } from './types';
+import { FormControl } from '@angular/forms';
 
 declare var google: any;
 
@@ -27,7 +28,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapHolder: ElementRef;
 
     private _map: any;
-
     
     @Input()
     set center(value: LatLng ){
@@ -115,8 +115,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     private _draggabelCursor$ = new BehaviorSubject<boolean>(true);
 
     private randomMarkerAmount;
-    
-    
     private _mapListeners = [];
     
     constructor(
@@ -134,10 +132,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         ).catch(
             (err) => {
-
+                console.log("ERROR Loading Map");
             }
         );
-
     }
 
     ngAfterViewInit(){}

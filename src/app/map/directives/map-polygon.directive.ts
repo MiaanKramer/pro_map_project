@@ -110,6 +110,9 @@ export class MapPolygonDirective implements OnInit, OnDestroy, ControlValueAcces
 			this._zone.run(() => {
 				this._onChange(this.serializePath());
 			});
+
+			let area = google.maps.geometry.spherical.computeArea(this._polygon.getPath());
+			console.log("Area: ", area + "m\u00B2");
 		});
 
 		this._path$.subscribe(pathArr => {

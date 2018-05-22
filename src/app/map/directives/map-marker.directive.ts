@@ -141,6 +141,9 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
         this._marker.addListener('click', (event) => {
             this._zone.run(() => {
                 this.clickEmitter.emit(event);
+
+                var elevationService = new google.maps.ElevationService;
+                this.getElevation(this._marker.getPosition(), elevationService);
             });
         });
 
@@ -156,6 +159,23 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
             });
         });
 
+    }
+
+    getElevation(location, elevationService){
+        elevationService.getElevationForLocations({
+            'locations': [location],
+
+        }, function(result, status) {
+            if(status == 'OK'){
+                if(result[0]){
+                    console.log("Elevation: ", result[0].elevation + " m");
+                } else {
+                    console.log("No Results Found");
+                }
+            } else {
+                console.log("An Error Occured While Retrieving The Data")
+            }
+        });
     }
 
     getAnimation(animation: 'drop' | 'bounce' | string){

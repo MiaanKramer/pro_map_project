@@ -3,8 +3,8 @@ import 'hammerjs';
 
 import { BrowserModule }  from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import {
 	MatButtonModule,
