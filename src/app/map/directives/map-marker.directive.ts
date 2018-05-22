@@ -89,6 +89,9 @@ export class MapMarkerDirective implements OnInit, OnDestroy, ControlValueAccess
         visible: true
     };
 
+    @Output('move')
+    moveEmitter = new EventEmitter<MouseEvent>();
+
     private _position$ = new BehaviorSubject<LatLng>({lat: 0, lng: 0});
     private _options$ = new BehaviorSubject<LatLng>(this._defaultOptions);
     private _marker: any;

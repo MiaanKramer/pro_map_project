@@ -24,12 +24,16 @@ export class AppComponent {
     ]);
 
     markersControl = new FormArray([
-        new FormControl({ lat: 1, lng: -1 }),
-        new FormControl({ lat: 45, lng: -35 })
+        new FormControl({ lat: 1, lng: 1, elevation: null }),
+        new FormControl({ lat: 1, lng: -1, elevation: null }),
+        new FormControl({ lat: -1, lng: 1, elevation: null }),
+        new FormControl({ lat: -1, lng: -1, elevation: null })
     ]);
 
     mapInfo: any = {};
+
     marker = { lat: 1, lng: -1 };
+
     poly = [
         { lat: 1, lng: -1 },
         { lat: 1, lng: 1 },
@@ -37,6 +41,10 @@ export class AppComponent {
         { lat: -1, lng: -1 }
     ];
 
+    markerMoved(event) {
+        console.log(event);
+
+    }
 
     mouseMoved(event) {
         this.mapInfo.mouseCoords = event.latLng;
@@ -49,7 +57,6 @@ export class AppComponent {
     removeMarker() {
         this.markersControl.removeAt(0);
     }
-
 
 
 }

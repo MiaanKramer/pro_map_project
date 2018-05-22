@@ -1,28 +1,23 @@
-<pv-map (move)="mouseMoved($event)" [zoom]="22" [center]="{lat: 0, lng: 0}" *ngIf="showMap">
-    <pv-map-marker *ngFor="let control of markersControl.controls" [formControl]="control">
-        <pv-map-info-window content="<div class='window'>
-                    <h2>
-                        Pre-Rendered Dialog
-                    </h2>
-                    <p>
-                        This is a pre-rendered dialog, which means that <code>$mdDialog</code> doesn't compile its
-                        template on each opening.
-                    </p>
-                    <p>
-                        The Dialog Element is a static element in the DOM, which is just visually hidden.<br/>
-                        Once the dialog opens, we just fetch the element from the DOM into our dialog and upon close
-                        we restore the element back into its old DOM position.
-                    </p>
-                </div>">
+<mat-autocomplete>
+    <mat-option [value]="option">
+    </mat-option>
+</mat-autocomplete>
+<pv-map (move)="mouseMoved($event)" [zoom]="22" [center]="{lat: 0, lng: 0}" *ngIf="showMap" [bounds]="markersControl.controls">
+    <pv-map-marker *ngFor="let control of markersControl.controls" [formControl]="control" (move)="markerMoved($event)">
+        <pv-map-info-window content="<p><strong>Lat: {{ control.value.lat }}</strong></p>
+                                     <p><strong>Lng: {{ control.value.lng }}</strong> </p>
+                                     <p><strong>Elevation: {{ control.value.elevation }}</strong> </p>">
         </pv-map-info-window>
     </pv-map-marker>
     <pv-map-polygon *ngFor="let control of polysControl.controls" [formControl]="control">
     </pv-map-polygon>
 </pv-map>
 <div class="debug-info">
+
     <button (click)="showMap = !showMap">Toggle Map</button>
     <button (click)="addMarker()">Add</button>
     <button (click)="removeMarker()">Remove</button>
+
     <pre>
         <code>
             Info:
@@ -41,4 +36,5 @@
             {{ markersControl.value | json }}
         </code>
     </pre>
+
 </div>

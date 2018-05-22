@@ -17,7 +17,7 @@ declare var google: any;
 export class MapInfoWindowDirective implements OnInit, OnDestroy {
 
     private _defaultOptions: any = {
-        maxWidth: 250,
+        maxWidth: 200,
         content: 'Default Content'
     };
 

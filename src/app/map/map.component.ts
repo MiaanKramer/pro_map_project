@@ -84,6 +84,11 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this._draggabelCursor$.next(value);
     }
 
+    @Input()
+    set bounds(value: any) {
+        this._bounds$.next(value);
+    }
+
     @Output('move')
     moveEmitter = new EventEmitter<MouseEvent>();
 
@@ -113,6 +118,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
     private _gestureHandeling$ = new BehaviorSubject<string>('greedy');
     private _mapTypeId$ = new BehaviorSubject<string>('terrain');
     private _draggabelCursor$ = new BehaviorSubject<boolean>(true);
+    private _bounds$ = new BehaviorSubject<LatLng[]>([]);
 
     private randomMarkerAmount;
     private _mapListeners = [];
@@ -139,7 +145,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit() { }
 
-
     ngOnDestroy() {
         this._map.unbindAll();
 
@@ -157,6 +162,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this._gestureHandeling$.complete();
         this._mapTypeId$.complete();
         this._draggabelCursor$.complete();
+        this._bounds$.complete();
     }
 
     selectLocation(pos) {
@@ -169,14 +175,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this._markers.useMap(this._map);
         this._polygons.useMap(this._map);
 
-        this._bounds = new google.maps.latLngBounds();
-
-        let markers = this._markers.get();
-        markers.forEach(marker => {
-            this._bounds.extend(marker.latLng);
-        });
-
-        this._map.fitBOunds(this._bounds);
+        this.setBounds();
 
         this._mapListeners.push(this._map.addListener('mousemove', (e) => {
             this._ngZone.run(() => {
@@ -197,7 +196,16 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         this._center$.subscribe(latLng => {
             this._map.setCenter(latLng);
         });
+    }
 
+    setBounds() {
+        console.log("setBounds: ", this._bounds$.value[0]);
+        this._bounds = google.maps.latLngBounds();
+        this._bounds$.subscribe(bound => {
+            console.log(bound);
+            this._bounds.extend(bound);
+        });
+        this._map.fitBounds(this._bounds);
     }
 
 }
